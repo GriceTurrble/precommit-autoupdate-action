@@ -82,6 +82,9 @@ runs:
       if: ${{ steps.create-pr.outputs.pull-request-number }}
       run: |
         ACTION="${{ steps.create-pr.outputs.pull-request-operation }}"
+        if [ "$ACTION" == "none" ]; then
+          ACTION="unchanged"
+        fi
         PR_NUMBER="${{ steps.create-pr.outputs.pull-request-number }}"
         PR_URL="${{ steps.create-pr.outputs.pull-request-url }}"
         echo "PR ${ACTION}: [#${PR_NUMBER}](${PR_URL})" >> $GITHUB_STEP_SUMMARY
