@@ -81,7 +81,5 @@ runs:
     - name: "PR created"
       if: ${{ steps.create-pr.outputs.pull-request-number }}
       run: |
-        echo "# PR created\n" >> $GITHUB_STEP_SUMMARY
-        echo "- PR #${{ steps.create-pr.outputs.pull-request-number }}" >> $GITHUB_STEP_SUMMARY
-        echo "- URL: ${{ steps.create-pr.outputs.pull-request-url }}" >> $GITHUB_STEP_SUMMARY
+        echo "PR created: [#${{ steps.create-pr.outputs.pull-request-number }}](${{ steps.create-pr.outputs.pull-request-url }})" >> $GITHUB_STEP_SUMMARY
       shell: bash
