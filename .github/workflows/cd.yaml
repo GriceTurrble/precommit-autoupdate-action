@@ -1,16 +1,3 @@
-# On updates to main branch, read the VERSION file in this repo. If that file has changed, create a new release and version tags.
-
-# Versions are expected in SemVer format, `MAJOR.MINOR.PATCH`
-# The HEAD commit is tagged with `v{MAJOR}`, `v{MAJOR}.{MINOR}`, and `v{MAJOR}.{MINOR}.{PATCH}` (the latter through a GH release).
-# Tags are force-pushed, replacing any existing with the same name.
-
-# In practice, a downstream workflow will target this repo in a few ways:
-# - `v{MAJOR}`: the workflow accepts all MINOR and PATCH updates automatically. No Dependabot PRs are generated unless the MAJOR version is changed.
-# - `v{MAJOR}.{MINOR}`: the workflow accepts all PATCH updates automatically. No Dependabot PRs are generated if only the PATCH version is changed.
-# - `v{MAJOR}.{MINOR}.{PATCH}`: the workflow accepts no updates automatically. Dependabot will generate update PRs for all changes.
-# We can also simply use the `main` branch (take all updates, make no Dependabot PRs) or a commit SHA (take no updates, potentially make Dependabot PRs for all changes).
-# Unless there are specific reasons to do otherwise, most workflows should target the `v{MAJOR}` tag.
-
 name: CD
 permissions: write-all
 on:
@@ -25,4 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: griceturrble/github-actions-cd-action@v0
+      - uses: griceturrble/github-actions-cd-action@v1
