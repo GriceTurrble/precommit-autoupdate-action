@@ -11,7 +11,6 @@
 # We can also simply use the `main` branch (take all updates, make no Dependabot PRs) or a commit SHA (take no updates, potentially make Dependabot PRs for all changes).
 # Unless there are specific reasons to do otherwise, most workflows should target the `v{MAJOR}` tag.
 
-
 name: CD
 permissions: write-all
 on:
