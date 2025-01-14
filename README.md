@@ -69,7 +69,7 @@ if you want the automatic PRs to trigger additional CI workflows.
    grant `contents: write` and `pull-requests: write` permissions,
    either at the workflow or job levels.
 
-2. You *must* explicitly allow GitHub Actions to create pull requests
+2. You _must_ explicitly allow GitHub Actions to create pull requests
    for this action to work.
    In your own repo,
    under **Settings > Actions > General**,
@@ -77,7 +77,7 @@ if you want the automatic PRs to trigger additional CI workflows.
    **"Allow GitHub Actions to create and approve pull requests"** checkbox.
 
 3. When using the default `token` argument (your `GITHUB_TOKEN`),
-   the PR that is generated *cannot* trigger additional GitHub Actions workflows.
+   the PR that is generated _cannot_ trigger additional GitHub Actions workflows.
    This is a limitation set up by GitHub themselves.
 
 To work around the `token` limitation and have the new PR trigger workflows,
