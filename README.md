@@ -6,7 +6,7 @@ Use this in a scheduled job to keep your hooks up-to-date with latest changes.
 
 ## Usage
 
-Include the following in a GitHub Action workflow:
+Include `precommit-autoupdate-action` in a GitHub Actions workflow:
 
 ```yaml
 # .github/workflows/precommit-autoupdate.yaml
