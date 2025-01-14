@@ -1,6 +1,8 @@
 # precommit-autoupdate-action
 
-Runs [pre-commit](https://pre-commit.com) autoupdate within GitHub Actions.
+Runs [pre-commit](https://pre-commit.com) autoupdate within GitHub Actions,
+creating a Pull Request automatically with any updates detected.
+Use this in a scheduled job to keep your hooks up-to-date with latest changes.
 
 ## Usage
 
@@ -29,24 +31,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: griceturrble/precommit-autoupdate-action@v0
+
+      - uses: griceturrble/precommit-autoupdate-action@v1
         with:
           # All arguments below are optional
           # and are shown with their default values:
 
-          # token to use for authenticating to GitHub
+          # token to use for authenticating to GitHub.
           token: ${{ github.token }}
-          # Version of Python to use to install pre-commit:
+          # Version of Python to use to install pre-commit.
           python_version: "3.12"
-          # Version of Pre-commit to install:
+          # Version of Pre-commit to install.
           pre_commit_version: "4.0.1"
           # Path to the .pre-commit-config.yaml file.
           path_to_config: ".pre-commit-config.yaml"
           # Title of the PR created:
           pr_title: "pre-commit autoupdate"
-          # git branch that is pushed with these changes:
+          # git branch that is pushed with these changes.
           pr_branch_name: "ci/pre-commit-autoupdate"
-          # Whether to create the PR in draft mode
+          # Whether to create the PR in draft mode.
           create_as_draft: false
 ```
 
@@ -93,7 +96,7 @@ is to use the `create_as_draft` arg for this action
 
 ```yaml
 # precommit-autoupdate.yaml
-- uses: griceturrble/precommit-autoupdate-action@v0
+- uses: griceturrble/precommit-autoupdate-action@v1
   with:
     create_as_draft: true
 ```
