@@ -6,33 +6,21 @@ inputs:
     default: ${{ github.token }}
   python_version:
     description: "Python version to use."
-    type: string
-    required: false
     default: "3.12"
   pre_commit_version:
-    type: string
     description: "Pre-commit version to use."
-    required: false
     default: "4.0.1"
   path_to_config:
-    type: string
     description: "Relative path to the .pre-commit-config.yaml file"
-    required: false
     default: ".pre-commit-config.yaml"
   pr_title:
-    type: string
     description: "Title of the PR to create."
-    required: false
     default: "pre-commit autoupdate"
   pr_branch_name:
-    type: string
     description: "Name of the branch to create with the update PR."
-    required: false
     default: "ci/pre-commit-autoupdate"
   create_as_draft:
-    type: boolean
     description: "Whether to open the update PR in draft mode"
-    required: false
     default: false
 
 runs:
@@ -73,7 +61,7 @@ runs:
         # start in draft, so that I can manually un-draft it,
         # in order to trigger CI runs
         # See: https://github.com/peter-evans/create-pull-request/issues/48
-        draft: ${{ inputs.create_as_draft }}
+        draft: ${{ inputs.create_as_draft == 'true' }}
         # Only interested in updates to pre-commit config
         add-paths: |
           ${{ inputs.path_to_config }}
