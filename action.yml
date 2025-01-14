@@ -1,5 +1,6 @@
 name: "Pre-commit autoupdate"
 description: "Runs pre-commit autoupdate"
+author: "Galen Rice"
 inputs:
   token:
     description: "The token that the action will use to create and update the pull request."
@@ -77,3 +78,7 @@ runs:
         PR_URL="${{ steps.create-pr.outputs.pull-request-url }}"
         echo "PR ${ACTION}: [#${PR_NUMBER}](${PR_URL})" >> $GITHUB_STEP_SUMMARY
       shell: bash
+
+branding:
+  icon: "refresh-cw"
+  color: "orange"
