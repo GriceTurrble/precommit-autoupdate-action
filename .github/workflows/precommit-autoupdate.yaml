@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: griceturrble/precommit-autoupdate-action@v0
+      # When dogfooding ourselves, target main branch to avoid chasing tags
+      - uses: griceturrble/precommit-autoupdate-action@main
         with:
           create_as_draft: true
