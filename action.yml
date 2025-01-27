@@ -23,6 +23,18 @@ inputs:
   create_as_draft:
     description: "Whether to open the update PR in draft mode"
     default: false
+  pr_labels:
+    description: "Comma or newline separated list of labels to add to the pull request"
+    required: false
+  pr_assignees:
+    description: "Comma or newline separated list of GitHub usernames to assign to the pull request"
+    required: false
+  pr_reviewers:
+    description: "Comma or newline separated list of GitHub usernames to request reviews from"
+    required: false
+  pr_team_reviewers:
+    description: "Comma or newline separated list of GitHub team slugs to request reviews from"
+    required: false
 
 runs:
   using: "composite"
@@ -66,6 +78,10 @@ runs:
         # Only interested in updates to pre-commit config
         add-paths: |
           ${{ inputs.path_to_config }}
+        labels: ${{ inputs.pr_labels }}
+        assignees: ${{ inputs.pr_assignees }}
+        reviewers: ${{ inputs.pr_reviewers }}
+        team-reviewers: ${{ inputs.pr_team_reviewers }}
 
     - name: "PR created"
       if: ${{ steps.create-pr.outputs.pull-request-number }}
