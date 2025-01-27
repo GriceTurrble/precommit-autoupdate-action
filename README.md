@@ -194,7 +194,7 @@ consider setting the following options in your workflow to prevent extra GitHub 
   jobs:
     ci:
       runs-on: ubuntu-latest
-      if: ${{ !github.event.pull_request || !contains(lower(github.event.pull_request.title), '[draft]') }}
+      if: ${{ !github.event.pull_request || !contains(github.event.pull_request.title, '[draft]') }}
   ```
 
   See [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idif)
