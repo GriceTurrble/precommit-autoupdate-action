@@ -6,7 +6,8 @@ Use this in a scheduled job to keep your hooks up-to-date with latest changes.
 
 ## Usage
 
-Include `precommit-autoupdate-action` in a GitHub Actions workflow:
+Include `precommit-autoupdate-action` in a GitHub Actions workflow.
+For example:
 
 ```yaml
 # .github/workflows/precommit-autoupdate.yaml
@@ -31,27 +32,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: griceturrble/precommit-autoupdate-action@v1
-        with:
-          # All arguments below are optional
-          # and are shown with their default values:
-
-          # token to use for authenticating to GitHub.
-          token: ${{ github.token }}
-          # Version of Python to use to install pre-commit.
-          python_version: "3.12"
-          # Version of Pre-commit to install.
-          pre_commit_version: "4.1.0"
-          # Path to the .pre-commit-config.yaml file.
-          path_to_config: ".pre-commit-config.yaml"
-          # Title of the PR created:
-          pr_title: "pre-commit autoupdate"
-          # git branch that is pushed with these changes.
-          pr_branch_name: "ci/pre-commit-autoupdate"
-          # Whether to create the PR in draft mode.
-          create_as_draft: false
 ```
+
+### Action inputs
+
+All inputs are optional.
+Many of these inputs are passed unchanged to [peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request/);
+please refer there for more detailed instructions:
+
+| Name                 | Description                                                                                                                          | Default                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
+| `token`              | Token to use for authenticating to GitHub.                                                                                           | `GITHUB_TOKEN`               |
+| `python_version`     | Version of Python to use to install pre-commit.                                                                                      | `"3.12"`                     |
+| `pre_commit_version` | Version of Pre-commit to use.                                                                                                        | `"4.1.0"`                    |
+| `path_to_config`     | Path to the `.pre-commit-config.yaml` file.                                                                                          | `".pre-commit-config.yaml"`  |
+| `pr_title`           | Title of the PR created by this action (passed as `title` to `create-pull-request`).                                                 | `"pre-commit autoupdate"`    |
+| `pr_branch_name`     | git branch that is pushed with these changes (passed as `branch` to `create-pull-request`).                                          | `"ci/pre-commit-autoupdate"` |
+| `create_as_draft`    | Whether to create the PR in draft mode (passed as `draft` to `create-pull-request`).                                                 | `false`                      |
+| `pr_labels`          | Comma- or newline-separated list of labels to add to the pull request (passed as `labels to `create-pull-request`).                  |                              |
+| `pr_assignees`       | Comma- or newline-separated list of GitHub usernames to assign to the pull request (passed as `assignees` to `create-pull-request`). |                              |
+| `pr_reviewers`       | Comma- or newline-separated list of GitHub usernames to request reviews from (passed as `reviewers` to `create-pull-request`).       |                              |
+| `pr_team_reviewers`  | Comma- or newline-separated list of GitHub team slugs to request reviews from (passed as `team-reviewers` to `create-pull-request`). |                              |
 
 ## Permissions
 
@@ -90,7 +92,14 @@ These may include creating a repo-scoped PAT,
 creating SSH Deploy keys to push the branch,
 or creating a GitHub App.
 
-Another, more manual option,
+### Workaround: create PRs as draft
+
+> [!note]
+> Draft PRs may not be available to you.
+> See [GitHub Docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/changing-the-stage-of-a-pull-request)
+> for more details.
+
+One manual option for working around the GH Actions limitations
 is to use the `create_as_draft` arg for this action
 (which is passed to the `draft` arg in the create-pull-request action):
 
@@ -101,8 +110,8 @@ is to use the `create_as_draft` arg for this action
     create_as_draft: true
 ```
 
-You can then update your CI workflow for standard pull requests
-to trigger on the `ready_for_review` type:
+In your CI workflow,
+include the `ready_for_review` type as a trigger:
 
 ```yaml
 # ci.yaml
@@ -121,3 +130,72 @@ With this in place, `precommit-autoupdate-action` will generate
 draft PRs only.
 You may then open the new PR and manually mark it "Ready for review".
 This manual action will then trigger your CI workflow.
+
+### Workaround: edit PR titles
+
+Another manual workaround option is to create PRs with a "draft" title,
+then editing the title of that PR.
+This is handy when working in a repo that does not permit draft PRs.
+
+Simply change the `pr_title` arg for this action to include
+some prefix, such as `[Draft]`:
+
+```yaml
+# precommit-autoupdate.yaml
+- uses: griceturrble/precommit-autoupdate-action@v1
+  with:
+    pr_title: "[Draft] pre-commit autoupdate"
+```
+
+In your CI workflow,
+include the `edited` type as a trigger:
+
+```yaml
+# ci.yaml
+on:
+  pull_request:
+    types:
+      # These types are the defaults for a `pull_request` trigger:
+      - opened
+      - synchronize
+      - reopened
+      # Include all the above AND this one:
+      - edited
+```
+
+With these changes, new PRs will be opened with the title `[Draft] pre-commit autoupdate`.
+You may then open the new PR and manually change its title,
+such as removing the `[Draft]` prefix.
+This triggers the `edited` event for the PR,
+which in turn will trigger your CI workflow.
+
+Note that the `edited` type is also triggered
+whenever a PR description is updated, as well.
+This may impact the workflow of your other PRs,
+where any change (including clicking task checkboxes) counts as an "edit"
+that will trigger a new CI run.
+
+If you don't already,
+consider setting the following options in your workflow to prevent extra GitHub Actions usage:
+
+- Use [workflow concurrency](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/control-the-concurrency-of-workflows-and-jobs) to cancel in-flight jobs when a new one begins,
+  such as:
+
+  ```yaml
+  concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+  ```
+
+- Use the same `[Draft]` title prefix as part of your other CI workflows,
+  skipping entire jobs if this text is present in that title:
+
+  ```yaml
+  jobs:
+    ci:
+      runs-on: ubuntu-latest
+      if: ${{ !github.event.pull_request || !contains(github.event.pull_request.title, '[draft]') }}
+  ```
+
+  See [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idif)
+  for more details.
