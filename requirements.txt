@@ -1,4 +1,4 @@
 # NOTE: this is intended for Renovate/Dependabot to notify of updates
-pre-commit==4.1.0
+pre-commit==4.2.0
 # If the version is bumped, please update the `pre_commit_version` in the action.yml
 # and bump the action to a new version to release the change.
