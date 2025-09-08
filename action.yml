@@ -22,7 +22,7 @@ inputs:
     default: "ci/pre-commit-autoupdate"
   create_as_draft:
     description: "Whether to open the update PR in draft mode"
-    default: false
+    default: "false"
   pr_labels:
     description: "Comma or newline separated list of labels to add to the pull request"
     required: false
@@ -62,6 +62,23 @@ runs:
           > ${{ env.TEMP_FILENAME }}
       shell: bash
 
+    - name: "Read temp file contents for commit message"
+      # Adds a multiline string to COMMIT_MESSAGE.
+      # See: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#example-of-a-multiline-string
+      run: |
+        if [ -f "${{ env.TEMP_FILENAME }}" ]; then
+          {
+            echo 'COMMIT_MESSAGE<<EOF'
+            echo "${{ inputs.pr_title }}"
+            echo ''
+            cat ${{ env.TEMP_FILENAME }}
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
+        else
+          echo "COMMIT_MESSAGE=${{ inputs.pr_title }}" >> $GITHUB_ENV
+        fi
+      shell: bash
+
     - name: "Create PR for updates"
       id: create-pr
       uses: peter-evans/create-pull-request@v7
@@ -76,6 +93,7 @@ runs:
         # See: https://github.com/peter-evans/create-pull-request/issues/48
         draft: ${{ inputs.create_as_draft == 'true' }}
         # Only interested in updates to pre-commit config
+        commit-message: ${{ env.COMMIT_MESSAGE }}
         add-paths: |
           ${{ inputs.path_to_config }}
         labels: ${{ inputs.pr_labels }}
