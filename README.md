@@ -49,7 +49,7 @@ please refer there for more detailed instructions:
 | `path_to_config`     | Path to the `.pre-commit-config.yaml` file.                                                                                          | `".pre-commit-config.yaml"`  |
 | `pr_title`           | Title of the PR created by this action (passed as `title` to `create-pull-request`).                                                 | `"pre-commit autoupdate"`    |
 | `pr_branch_name`     | git branch that is pushed with these changes (passed as `branch` to `create-pull-request`).                                          | `"ci/pre-commit-autoupdate"` |
-| `create_as_draft`    | Whether to create the PR in draft mode (passed as `draft` to `create-pull-request`).                                                 | `false`                      |
+| `create_as_draft`    | Whether to create the PR in draft mode (passed as `draft` to `create-pull-request`).                                                 | `"false"`                    |
 | `pr_labels`          | Comma- or newline-separated list of labels to add to the pull request (passed as `labels to `create-pull-request`).                  |                              |
 | `pr_assignees`       | Comma- or newline-separated list of GitHub usernames to assign to the pull request (passed as `assignees` to `create-pull-request`). |                              |
 | `pr_reviewers`       | Comma- or newline-separated list of GitHub usernames to request reviews from (passed as `reviewers` to `create-pull-request`).       |                              |

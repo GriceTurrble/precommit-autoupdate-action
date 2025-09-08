@@ -22,7 +22,7 @@ inputs:
     default: "ci/pre-commit-autoupdate"
   create_as_draft:
     description: "Whether to open the update PR in draft mode"
-    default: false
+    default: "false"
   pr_labels:
     description: "Comma or newline separated list of labels to add to the pull request"
     required: false
