@@ -41,7 +41,7 @@ All inputs are optional.
 Many of these inputs are passed unchanged to [peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request/);
 please refer there for more detailed instructions:
 
-| Name                 | Description                                                                                                                          | Default                      |
+| Name                 | Description                                                                                                                          | Default                       |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
 | `token`              | Token to use for authenticating to GitHub.                                                                                           | `GITHUB_TOKEN`                |
 | `python_version`     | Version of Python to use to install pre-commit.                                                                                      | `"3.12"`                      |
