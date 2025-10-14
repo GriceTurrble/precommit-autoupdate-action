@@ -47,6 +47,7 @@ please refer there for more detailed instructions:
 | `python_version`     | Version of Python to use to install pre-commit.                                                                                      | `"3.12"`                     |
 | `pre_commit_version` | Version of Pre-commit to use.                                                                                                        | `"4.3.0"`                    |
 | `path_to_config`     | Path to the `.pre-commit-config.yaml` file.                                                                                          | `".pre-commit-config.yaml"`  |
+| `commit_message`     | Message to use for the generated commit. | `"ci: pre-commit autoupdate"` |
 | `pr_title`           | Title of the PR created by this action (passed as `title` to `create-pull-request`).                                                 | `"pre-commit autoupdate"`    |
 | `pr_branch_name`     | git branch that is pushed with these changes (passed as `branch` to `create-pull-request`).                                          | `"ci/pre-commit-autoupdate"` |
 | `create_as_draft`    | Whether to create the PR in draft mode (passed as `draft` to `create-pull-request`).                                                 | `"false"`                    |
