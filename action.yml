@@ -14,6 +14,9 @@ inputs:
   path_to_config:
     description: "Relative path to the .pre-commit-config.yaml file"
     default: ".pre-commit-config.yaml"
+  commit_message:
+    description: "Message to use for the generated commit"
+    default: "ci: pre-commit autoupdate"
   pr_title:
     description: "Title of the PR to create."
     default: "pre-commit autoupdate"
@@ -69,13 +72,13 @@ runs:
         if [ -f "${{ env.TEMP_FILENAME }}" ]; then
           {
             echo 'COMMIT_MESSAGE<<EOF'
-            echo "${{ inputs.pr_title }}"
+            echo "${{ inputs.commit_message }}"
             echo ''
             cat ${{ env.TEMP_FILENAME }}
             echo 'EOF'
           } >> "$GITHUB_ENV"
         else
-          echo "COMMIT_MESSAGE=${{ inputs.pr_title }}" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=${{ inputs.commit_message }}" >> $GITHUB_ENV
         fi
       shell: bash
 
