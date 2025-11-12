@@ -7,10 +7,10 @@ inputs:
     default: ${{ github.token }}
   python_version:
     description: "Python version to use."
-    default: "3.12"
+    default: "3.14"
   pre_commit_version:
     description: "Pre-commit version to use."
-    default: "4.3.0"
+    default: "4.4.0"
   path_to_config:
     description: "Relative path to the .pre-commit-config.yaml file"
     default: ".pre-commit-config.yaml"
