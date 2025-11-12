@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: griceturrble/precommit-autoupdate-action@v2
+      - uses: griceturrble/precommit-autoupdate-action@v3
 ```
 
 ### Action inputs
@@ -106,7 +106,7 @@ is to use the `create_as_draft` arg for this action
 
 ```yaml
 # precommit-autoupdate.yaml
-- uses: griceturrble/precommit-autoupdate-action@v2
+- uses: griceturrble/precommit-autoupdate-action@v3
   with:
     create_as_draft: true
 ```
@@ -143,7 +143,7 @@ some prefix, such as `[Draft]`:
 
 ```yaml
 # precommit-autoupdate.yaml
-- uses: griceturrble/precommit-autoupdate-action@v2
+- uses: griceturrble/precommit-autoupdate-action@v3
   with:
     pr_title: "[Draft] pre-commit autoupdate"
 ```
